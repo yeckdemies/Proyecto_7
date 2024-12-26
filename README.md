@@ -57,7 +57,6 @@ Actualizar el rol a un usuario
     "userName": "yolanda",
     "role": "user"
 }
-
 - `DELETE http://localhost:3000/api/v1/users/deleteUser`
 Eliminar a un usuario por nombre
 {
@@ -88,18 +87,28 @@ Eliminar un evento
 }
 
 3. Inscripciones
-- `GET http://localhost:3000/api/v1/libros` - Obtener todos los libros
+- `GET http://localhost:3000/api/v1/inscriptions`
+Obtener todas las inscripciones
 
+- `POST http://localhost:3000/api/v1/inscriptions`
+Crear una inscripción
+{
+    "user": "usuario3",
+    "event": "Seminario de Inteligencia Artificial",
+    "status": "confirmed"
+}
+
+- `PUT http://localhost:3000/api/v1/inscriptions/updateInscription`
+Actualizar una inscripción
+{
+    "id": "676ca4a17f26490d7d087c83",
+    "status": "confirmed"
+}
+- `DELETE http://localhost:3000/api/v1/inscriptions/deleteInscription/676ca4a17f26490d7d087c87`
+Eliminar una inscrición
 
 ## Validación
 Para validar que todo funciona correctamente, con Postman o Insomnia puedes hacer peticiones a las rutas de la API.
-
-## Paquetes Necesarios
-- `express`: Framework para construir aplicaciones web y APIs.
-- `mongoose`: ODM (Object Data Modeling) para MongoDB y Node.js.
-- `dotenv`: Cargar variables de entorno desde un archivo `.env`.
-- `bcrypt`: Encriptación de contraseñas.
-- `jsonwebtoken`: Gestión de Tokens.
 
 ## Instrucciones
 1. Usuarios
@@ -120,7 +129,18 @@ Para validar que todo funciona correctamente, con Postman o Insomnia puedes hace
     - Al eliminar un evento se eliminarán las inscripciones que contenía.
     
 3. Inscripciones
+    - Una inscripción solo se refleja en el evento cuando su estado es confirmada. Se puede crear directamente en estado confirmada o actualizarla con posterioridad.
+    - Al cancelar o eliminar una inscrpción se actualizan los usuarios del evento.
     - Un usuario de tipo admin puede listar todas las inscripciones. Un usuario de tipo user solo puede listar sus propias inscripciones.
     - El usuario de tipo admin puede inscribir a cualquier usuario en un evento. Un usuario de tipo user solo puede inscribirse a sí mismo. 
     - Cuando se crea o se elimina una inscripción los usuarios del evento son actualizados. 
     - Una inscripción solo puede ser eliminado por el usuario que se ha inscrito o por un administrador. 
+
+## Paquetes Necesarios
+- `express`: Framework para construir aplicaciones web y APIs.
+- `mongoose`: ODM (Object Data Modeling) para MongoDB y Node.js.
+- `dotenv`: Cargar variables de entorno desde un archivo `.env`.
+- `bcrypt`: Encriptación de contraseñas.
+- `jsonwebtoken`: Gestión de Tokens.
+
+
