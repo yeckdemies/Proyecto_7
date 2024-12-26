@@ -87,7 +87,6 @@ const putInsciption = async (req, res, next) => {
     const { id, status } = req.body;
     const authenticatedUser = req.user;
     const inscriptionObject = await Inscription.findById(id);
-    const user = await User.findById(inscriptionObject.user);
 
     if (!status) {
       return res.status(400).json({ message: 'Status is required' });
@@ -104,6 +103,8 @@ const putInsciption = async (req, res, next) => {
     if (!inscriptionObject) {
       return res.status(404).json({ message: 'Inscription not found' });
     }
+
+    const user = await User.findById(inscriptionObject.user);
 
     if (
       authenticatedUser.role !== 'admin' &&
@@ -148,14 +149,17 @@ const putInsciption = async (req, res, next) => {
 
 const deleteInscription = async (req, res, next) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const authenticatedUser = req.user;
     const inscriptionObject = await Inscription.findById(id);
-    const user = await User.findById(inscriptionObject.user);
+
+    console.log(inscriptionObject);
 
     if (!inscriptionObject) {
       return res.status(404).json({ message: 'Inscription not found' });
     }
+
+    const user = await User.findById(inscriptionObject.user);
 
     if (
       authenticatedUser.role !== 'admin' &&
@@ -170,6 +174,7 @@ const deleteInscription = async (req, res, next) => {
       $pull: { users: inscriptionObject.user }
     });
 
+    console.log('id' + id);
     await Inscription.findByIdAndDelete(id);
 
     res.status(200).json({ message: 'Inscription deleted successfully' });
