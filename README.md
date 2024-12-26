@@ -1,5 +1,5 @@
 # Proyecto para la Gestión de Eventos
-Este es un proyecto de una API para la gestión de eventos en el que se pueden administrar usuarios con diferentes roles, admin y user, la gestión de los eventos y la gestión de las inscripciones.
+API para la gestión de eventos en el que se pueden administrar usuarios con diferentes roles, gestión de los eventos y gestión de las inscripciones.
 
 ## Librerías necesarias
 - Node.js (versión v20.11.0)
@@ -20,7 +20,7 @@ Este es un proyecto de una API para la gestión de eventos en el que se pueden a
     npm install
     ```
 
-## Carga inicial de datos
+## Carga inicial de datos (Opcional)
 1. Navega al directorio seeds
     ```sh
     cd Proyecto_7/src/utils/seeds/
@@ -35,7 +35,7 @@ Este es un proyecto de una API para la gestión de eventos en el que se pueden a
     npm run dev
     ```
     
-## Rutas de la API
+## Rutas API
 1. Usuarios
 - `POST http://localhost:3000/api/v1/users/register`
 Registro de usuarios
@@ -92,7 +92,7 @@ Eliminar un evento
 
 
 ## Validación
-Para validar que todo funciona correctamente, puedes usar herramientas como Postman o cURL para hacer peticiones a las rutas de la API mencionadas anteriormente.
+Para validar que todo funciona correctamente, con Postman o Insomnia puedes hacer peticiones a las rutas de la API.
 
 ## Paquetes Necesarios
 - `express`: Framework para construir aplicaciones web y APIs.
@@ -104,18 +104,20 @@ Para validar que todo funciona correctamente, puedes usar herramientas como Post
 ## Instrucciones
 1. Usuarios
     - Los usuarios solo se pueden registrar de tipo user.
-    - Solo un usuario de tipo admin puede listar los usuarios registrados. 
+    - Solo un usuario de tipo admin puede listar los usuarios registrados (el primer usuario admin lo manipulamos directamente en la base de datos). 
     - Un usuario de tipo admin puede actualizar el rol a un usuario de tipo user.
     - Solo está permitida la modificación del rol del usuario.
     - El usuario admin puede eliminar a cualquier usuario.
     - Un usuario solo puede eliminarse a sí mismo.
     - Cualquier usuario que conozca su nombre de usuario y contraseña puede logarse en la aplicación.
+    - Al eliminar un usuario se eliminarán todos los eventos en los que es organizador y se actualizarán en los que estaba inscrito.
 
 2. Eventos
     - No es necesario estar logado para listar los eventos.
     - Cualquier usuario identificado puede crear un evento.
     - Un evento solo puede ser modificado por la persona que lo ha creado o por un usuario de tipo admin.
     - Un evento solo puede ser eliminado por el usuario que lo ha creado o por un usuario de tipo admin.
+    - Al eliminar un evento se eliminarán las inscripciones que contenía.
     
 3. Inscripciones
     - Un usuario de tipo admin puede listar todas las inscripciones. Un usuario de tipo user solo puede listar sus propias inscripciones.
