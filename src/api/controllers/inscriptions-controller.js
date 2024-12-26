@@ -153,8 +153,6 @@ const deleteInscription = async (req, res, next) => {
     const authenticatedUser = req.user;
     const inscriptionObject = await Inscription.findById(id);
 
-    console.log(inscriptionObject);
-
     if (!inscriptionObject) {
       return res.status(404).json({ message: 'Inscription not found' });
     }

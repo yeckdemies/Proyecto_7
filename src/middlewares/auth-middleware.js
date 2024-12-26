@@ -70,6 +70,7 @@ const canDeleteUser = async (req, res, next) => {
 
 const isOwnerEvents = async (req, res, next) => {
   try {
+    console.log(req);
     const { user } = req;
     const { id } = req.body;
 
@@ -77,13 +78,15 @@ const isOwnerEvents = async (req, res, next) => {
       return res.status(401).json('Unauthorized: No user found in request');
     }
     const event = await Event.findById(id);
-    console.log(event);
 
     if (!event) {
       return res.status(404).json('Not Found: Event not found');
     }
 
-    if (event.organizer.toString() !== user._id.toString()) {
+    if (
+      user.role !== 'admin' &&
+      event.organizer.toString() !== user._id.toString()
+    ) {
       return res
         .status(403)
         .json('Forbidden: You are not the owner of this event');
