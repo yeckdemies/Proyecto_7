@@ -1,4 +1,5 @@
 const Event = require('../models/events-model');
+const Inscriptions = require('../models/inscriptions-model');
 
 const getEvents = async (req, res, next) => {
   try {
@@ -78,11 +79,15 @@ const deleteEvent = async (req, res, next) => {
   try {
     const { id } = req.body;
     const eventToDelete = await Event.findById(id);
+    const eventId = eventToDelete._id;
 
     if (!eventToDelete) {
       return res.status(400).json('Event not found');
     }
-    const eventDeleted = await Event.findByIdAndDelete(eventToDelete._id);
+    /*Eliminar datos relacionados */
+    await Inscriptions.deleteMany({ event: eventId });
+
+    const eventDeleted = await Event.findByIdAndDelete(eventId);
     return res.status(200).json('Event deleted: ' + eventDeleted.title);
   } catch (error) {
     return res.status(404).json({ message: error.message });

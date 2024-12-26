@@ -1,5 +1,7 @@
 const { signGenerate } = require('../../config/jwt');
 const User = require('../models/users-model');
+const Event = require('../models/events-model');
+const Inscriptions = require('../models/inscriptions-model');
 const bcrypt = require('bcrypt');
 
 const searchUser = async (userName) => {
@@ -88,12 +90,23 @@ const putUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const userToDelete = await searchUser(req.body.userName);
+    const userId = userToDelete._id;
 
     if (!userToDelete) {
       return res.status(400).json('User not found');
     }
-    const userDeleted = await User.findByIdAndDelete(userToDelete._id);
-    return res.status(200).json('User deleted: ' + userDeleted.userName);
+
+    /* Eliminar los datos relacionados */
+    await Event.deleteMany({ organizer: userId });
+    await Event.updateMany({ users: userId }, { $pull: { users: userId } });
+    await Inscriptions.deleteMany({ user: userId });
+    /* Fin Eliminación datos relacionados */
+
+    const userDeleted = await User.findByIdAndDelete(userId);
+
+    return res
+      .status(200)
+      .json('User and related data deleted' + userDeleted.userName);
   } catch (error) {
     return res.status(404).json({ message: error.message });
   }
