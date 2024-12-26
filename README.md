@@ -57,8 +57,35 @@ Actualizar el rol a un usuario
     "userName": "yolanda",
     "role": "user"
 }
+
+- `DELETE http://localhost:3000/api/v1/users/deleteUser`
+Eliminar a un usuario por nombre
+{
+    "userName": "yolanda"
+}
 2. Eventos
-- `GET http://localhost:3000/api/v1/libros` - Obtener todos los libros
+- `GET http://localhost:3000/api/v1/events`
+Obtener todos los eventos
+- `PUT http://localhost:3000/api/v1/events/updateEvent`
+Actualizar un evento
+{
+    "id": "676c777009bdfc75604a7cb1",
+    "title": "Nuevo concierto en Granada",
+    "description": "Concierto de música pop.",
+    "date": "2024-12-26"
+}
+- `POST http://localhost:3000/api/v1/events/createEvent`
+Crear un nuevo evento
+ {
+    "title": "Feria de Tecnología Educativa",
+    "description": "Soluciones tecnológicas para mejorar la educación.",
+    "date": "2024-12-31"
+  }
+- `DELETE http://localhost:3000/api/v1/events/deleteEvent`
+Eliminar un evento
+{
+    "id": "676c777009bdfc75604a7cb1"
+}
 
 3. Inscripciones
 - `GET http://localhost:3000/api/v1/libros` - Obtener todos los libros
