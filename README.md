@@ -45,7 +45,7 @@ Registro de usuarios
 }
 - `GET http://localhost:3000/api/v1/users`
 Obtener Usuarios
-- `POST http://localhost:3000/api/v1/users/login
+- `POST http://localhost:3000/api/v1/users/login`
 Realizar login en la aplicación
 {
     "userName": "usuario2",
