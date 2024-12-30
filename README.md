@@ -1,4 +1,4 @@
-# Proyecto para la Gestión de Eventos
+# Proyecto para la Gestión de Usuarios, Eventos e Inscripciones
 API para la gestión de eventos en el que se pueden administrar usuarios con diferentes roles, gestión de los eventos y gestión de las inscripciones.
 
 ## Librerías necesarias
