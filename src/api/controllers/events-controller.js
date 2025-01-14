@@ -13,8 +13,15 @@ const getEvents = async (req, res, next) => {
 
 const postEvent = async (req, res) => {
   try {
-    const { title, description, date } = req.body;
+    const { title, description, date, users } = req.body;
     const organizer = req.user._id;
+
+    if (users && users.length > 0) {
+      return res.status(400).json({
+        message: 'You cannot add users during event creation'
+      });
+    }
+
     const newEvent = new Event({
       title,
       description,
@@ -22,12 +29,6 @@ const postEvent = async (req, res) => {
       organizer,
       users: []
     });
-
-    if (users) {
-      return res.status(400).json({
-        message: 'You cannot add users during event creation'
-      });
-    }
 
     const eventSaved = await newEvent.save();
 
@@ -46,11 +47,11 @@ const postEvent = async (req, res) => {
 const putEvent = async (req, res, next) => {
   try {
     const { id, title, description, date, organizer, users } = req.body;
+
     const oldEvent = await Event.findById(id);
-    const newEvent = new Event(req.body);
-    newEvent._id = id;
-    newEvent.organizer = oldEvent.organizer;
-    newEvent.users = oldEvent.users;
+    if (!oldEvent) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
 
     if (organizer || users) {
       return res.status(400).json({
@@ -58,20 +59,26 @@ const putEvent = async (req, res, next) => {
       });
     }
 
-    if (title) newEvent.title = oldEvent.title ? title : oldEvent.title;
-    if (description)
-      newEvent.description = oldEvent.description
-        ? description
-        : oldEvent.description;
-    if (date) newEvent.date = oldEvent.date ? date : oldEvent.date;
+    const updatedEvent = {
+      title: title || oldEvent.title,
+      description: description || oldEvent.description,
+      date: date || oldEvent.date,
+      organizer: oldEvent.organizer,
+      users: oldEvent.users
+    };
 
-    const eventUpdated = await Event.findByIdAndUpdate(id, newEvent, {
+    const eventUpdated = await Event.findByIdAndUpdate(id, updatedEvent, {
       new: true
     });
 
-    return res.status(200).json(eventUpdated);
+    return res.status(200).json({
+      message: 'Event updated successfully',
+      event: eventUpdated
+    });
   } catch (error) {
-    return res.status(404).json({ message: error.message });
+    return res
+      .status(500)
+      .json({ message: 'Error updating event', error: error.message });
   }
 };
 

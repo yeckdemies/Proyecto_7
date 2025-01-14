@@ -12,6 +12,14 @@ mongoose
     'mongodb+srv://admin:XpnlgfIOTtA5j4AE@cluster0.5qp2i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
   )
   .then(async () => {
+    //Limpiar las colecciones antes
+    await User.deleteMany({});
+    console.log('Users collection cleared');
+    await Event.deleteMany({});
+    console.log('Events collection cleared');
+    await Inscription.deleteMany({});
+    console.log('Inscriptions collection cleared');
+
     // Insertar usuarios
     const usersWithHashedPasswords = users.map((user) => {
       return {
